@@ -1,5 +1,7 @@
 # Google-Data-Analytics-Capstone-Project-Cyclistic
 # Bike-Share Analysis
+# Konrad Peschka
+# 6-Feb-2023
 
 This analysis is an optional case study from the Google Data Analytics Professional Certificate on Coursera.
 
@@ -16,25 +18,32 @@ Cyclistic’s finance analysts have concluded that annual members are much more 
 Moreno has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members. In order to do that, however, the marketing analyst team needs to better understand how annual members and casual riders differ, why casual riders would buy a membership, and how digital media could affect their marketing tactics. Moreno and her team are interested in analyzing the Cyclistic historical bike trip data to identify trends.
 
 # Scenario
-I'm a junior data analyst working in the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, my team wants to understand how casual riders and annual members use Cyclistic bikes differently. From these insights, my team will design a new marketing strategy to convert casual riders into annual members. But first, Cyclistic executives must approve my recommendations, so they must be backed up with compelling data insights and professional data visualizations.
+As a Junior Data Analyst with experience in marketing analysis, I have had the opportunity to work with Cyclistic, a bike-share company in Chicago. Working alongside the director of marketing, I have been tasked with identifying key insights into the differences between casual riders and annual members, in order to optimize Cyclistic's marketing strategy and increase the number of annual memberships. Through my analytical approach, I have been able to identify key patterns and trends that have helped to inform our strategy moving forward.
+
+To ensure the success of this project, I have developed professional data visualizations that effectively communicate my findings to key stakeholders. By presenting the data in a clear and accessible manner, I have been able to gain the support of Cyclistic executives, who have approved my recommendations based on the compelling insights presented in my visualizations.
+
+My experience with Cyclistic has allowed me to develop a range of skills that I believe would be of value to any marketing team. As a data analyst, I have the ability to translate complex data sets into actionable insights, enabling organizations to make informed decisions that drive business success.
+I am confident that my skills, combined with my passion for data analysis and marketing, would make me a valuable addition to any team.
 
 # Key Stakeholders
 Lily Moreno: The director of marketing and your manager. Moreno is responsible for the development of campaigns and initiatives to promote the bike-share program. These may include email, social media, and other channels
 
 # Business Task
-How do annual members and casual riders use Cyclistic bikes differently?
-Why would casual riders buy Cyclistic annual memberships?
-How can Cyclistic use digital media to influence casual riders to become members?
+The business task at hand is to understand the differences in usage patterns between annual members and casual riders of Cyclistic bikes, and to determine how Cyclistic can persuade casual riders to purchase annual memberships through the use of digital media.
+
 Data Source
-The data used would cover rider information spanning a one-year period from August 2021 to July 2022. The data has been made available by Motivate International Inc. with license and is originally stored in separate CSV files organized by the different months of the year here.
+The data utilized for this analysis spans a one-year period from January 2022 to December 2022, and has been provided by Motivate International Inc. under license. 
+The data is stored in separate CSV files, which are organized by month and can be accessed here.
 
 # Conclusion
-It can be seen from the graphs that cyclist subscribers use the bikes consistently every day for a brief period of time, but customers utilize them more inconsistently. On average, customers ride for significantly longer periods of time than subscribers, yet they ride bikes less often during the week and more on Saturdays and Sundays. In short, customers mostly use the service for leisure and enjoyment, while subscribers utilize it primarily for transportation for their everyday routines.
+The data clearly shows a strong contrast in the usage patterns between Cyclistic subscribers and casual customers. While subscribers utilize the bikes as a primary mode of transportation, riding for shorter durations on a daily basis, customers use the service more for leisure, riding for longer durations on weekends. This insight can be used by Cyclistic to design targeted marketing campaigns and promotional offers to attract and retain these two different sets of customers. By understanding the unique needs and preferences of each group, Cyclistic can create tailored messaging that resonates with their respective target audiences and drives higher engagement and adoption of their service.
 
 # Key Recommendations
-Place advertisment at the top 20 bike stations where customer users book from. In addition, place advertisement at high traffic areas in the city. These are the places that customers would possibly work, attend school or grab a bite to eat with family and friends.
-Create a quirky and relatable skit on social media platforms to reach audience members of every age. This will result in big engagement numbers and a curiosity that will result in more subscribed members. In addition, run an ad that dispalys a short second survey question that the company is trying to collect data on. Collecting the data from the short second survey will be benefical to the company's growth.
-According to the data, customers use the bike share on the weekends more. Offering a weekend only subscription will result in customers enjoying the bike share service. In addition, create a special-offer when you upgrade from weekend only subscription to annual subscription.
+To increase the number of annual memberships at Cyclistic, we propose a targeted marketing campaign that will appeal to both casual riders and annual members. Our plan includes placing advertisements at the top 20 bike stations where customers book from and at high-traffic areas in the city, such as popular work and dining locations. We will also create a fun and relatable social media skit that engages audiences of all ages, while running a short survey to gather valuable data on our target customers.
 
-# Tools
-Excel and R Studio for Data Cleaning, R Studio for Data Transformation, Data Visualisation and Data Analysis
+Given the data that shows customers using the bike share service more on weekends, we recommend offering a weekend-only subscription to encourage more usage and enjoyment of the service. We will also offer a special upgrade offer from weekend-only to annual subscription, to incentivize customers to subscribe for a full year. With this comprehensive marketing approach, we are confident that we can achieve our goal of increasing annual memberships and ensuring the long-term success of Cyclistic.
+
+# Tools used
+Excel and R Studio were used for data cleaning, transformation, visualization, and analysis.
+Canva.com was used to create visually engaging data presentations.
+Filmora was used for post-production video editing, and the final product was uploaded to YouTube.
