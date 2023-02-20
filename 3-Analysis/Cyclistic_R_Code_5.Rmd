@@ -1,0 +1,386 @@
+---
+title: "Cyclistic"
+author: "Konrad Peschka"
+date: "04/02/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#--------------------------------------------
+#-------------------------------------------
+#    1- Prepare libraries and Data Frame
+#-------------------------------------------
+#--------------------------------------------
+
+#---------------------------------
+#   1.A - Install needed packages
+#--------------------------------
+```{r}
+  install.packages("tidyverse")
+  install.packages("lubridate")
+  install.packages("geosphere")
+  install.packages("ggplot2")
+
+  library(tidyverse)
+  library(lubridate)
+  library(geosphere)
+  library(ggplot2)
+```
+#----------------------------------------
+#    1.B- Import and combine the Data
+#----------------------------------------
+
+```{r}
+#Import data
+  trip_data_2022_01 <- read.csv("2022-01-divvy-tripdata.csv")
+  trip_data_2022_02 <- read.csv("2022-02-divvy-tripdata.csv")
+  trip_data_2022_03 <- read.csv("2022-03-divvy-tripdata.csv")
+  trip_data_2022_04 <- read.csv("2022-04-divvy-tripdata.csv")
+  trip_data_2022_05 <- read.csv("2022-05-divvy-tripdata.csv")
+  trip_data_2022_06 <- read.csv("2022-06-divvy-tripdata.csv")
+  trip_data_2022_07 <- read.csv("2022-07-divvy-tripdata.csv")
+  trip_data_2022_08 <- read.csv("2022-08-divvy-tripdata.csv")
+  trip_data_2022_09 <- read.csv("2022-09-divvy-tripdata.csv")
+  trip_data_2022_10 <- read.csv("2022-10-divvy-tripdata.csv")
+  trip_data_2022_11 <- read.csv("2022-11-divvy-tripdata.csv")
+  trip_data_2022_12 <- read.csv("2022-12-divvy-tripdata.csv")
+```
+
+#Print all the columns to check it visually 
+```{r}
+  colname_01 <- colnames(trip_data_2022_01)
+  colname_02 <- colnames(trip_data_2022_02)
+  colname_03 <- colnames(trip_data_2022_03)
+  colname_04 <- colnames(trip_data_2022_04)
+  colname_05 <- colnames(trip_data_2022_05)
+  colname_06 <- colnames(trip_data_2022_06)
+  colname_07 <- colnames(trip_data_2022_07)
+  colname_08 <- colnames(trip_data_2022_08)
+  colname_09 <- colnames(trip_data_2022_09)
+  colname_10 <- colnames(trip_data_2022_10)
+  colname_11 <- colnames(trip_data_2022_11)
+  colname_12 <- colnames(trip_data_2022_12)
+```
+
+  #if you wanna test the code modify this colname_2 in some colnames
+```{r}
+  #colname_02 <- c("ride_id","rideable_type2","started_at","ended_at2","start_station_name","start_station_id","end_station_name","end_station_id","start_lat","start_lng","end_lat","end_lng","member_casual")
+  ```
+
+#Run a code to check column names to ensure we can join all the data
+
+```{r}
+length_of_colnames <- length(colname_01) #With this variable i can know the leght of the vector
+i=1 #it allways start in 1
+
+#here you need to select mannually each column to be comparated with colname_1
+
+colname_b <- colname_02
+n=2 #the n comes with the colname_2
+#colname_b <- colname_03
+#n=3
+#colname_b <- colname_04
+#n=4
+#colname_b <- colname_05
+#n=5
+#colname_b <- colname_06
+#n=6
+#colname_b <- colname_07
+#n=7
+#colname_b <- colname_08
+#n=8
+#colname_b <- colname_09
+#n=9
+#colname_b <- colname_10
+#n=10
+#colname_b <- colname_11
+#n=11
+#colname_b <- colname_12
+#n=12
+
+print(paste0("Comparing: colname_01 = colname_",n))
+while(i<(length_of_colnames+1)) #check columns by columns if they are the same
+{	
+	if(colname_01[i] == colname_b[i]){
+		print(paste0("Column ", i," - Equal"))
+	}
+	else
+	{
+		print(paste0("Column ", i," - NotEqual"))
+	}
+	i <- i+1
+}
+```
+
+#Combine data into one set.
+```{r}
+all_data<- rbind(trip_data_2022_01, trip_data_2022_02, trip_data_2022_03, trip_data_2022_04, trip_data_2022_05, trip_data_2022_06, trip_data_2022_07, trip_data_2022_08, trip_data_2022_09, trip_data_2022_10, trip_data_2022_11, trip_data_2022_12)
+```
+
+#----------------------------------------
+#    1.C- Cast and Clean Data Frame
+#----------------------------------------
+#summary(all_data)
+
+# Cast the data from CHAR to DATE
+# Convert the "started_at" and "ended_at" columns drom char to Date and Time
+```{r}
+all_data$started_at <- strptime(all_data$started_at, "%Y-%m-%d %H:%M:%S")
+all_data$ended_at <- strptime(all_data$ended_at, "%Y-%m-%d %H:%M:%S")
+
+all_data <- all_data %>% drop_na()
+```
+
+#----------------------------------------------------
+#----------------------------------------------------
+#   2- Analyze Annual ans Casual member separatly
+#----------------------------------------------------
+#----------------------------------------------------
+
+#-------------------------
+#   2.A - Annual member
+#-------------------------
+
+# a- Create a dataframe for annual riders
+```{r}
+annual_members <- all_data[all_data$member_casual == "member", ]
+```
+
+# b- Calculate the total number of trips
+```{r}
+total_trips_annual <- nrow(annual_members)
+```
+
+# c- Calculate the average trip duration
+```{r}
+trip_duration_annual_sec <- as.numeric(mean(annual_members$ended_at - annual_members$started_at))
+average_duration_annual_min <- trip_duration_annual_sec / 60
+```
+
+# d- Calculate distance
+# Filter out the trips with missing latitude or longitude data
+```{r}
+valid_rows <- complete.cases(annual_members[, c("start_lng", "start_lat", "end_lng", "end_lat")])
+valid_```
+
+# Calculate the distances between the start and end points
+```{r}
+trip_distances_annual <- distHaversine(cbind(valid_annual_members$start_lng, valid_annual_members$start_lat), cbind(valid_annual_members$end_lng, valid_annual_members$end_lat))
+```
+
+# Calculate the average distance
+```{r}
+average_distance_annual_m <- mean(trip_distances_annual, na.rm = TRUE)
+average_distance_annual_km <- average_distance_annual_m / 1000
+```
+
+# e- Print the results
+```{r}
+result_string_1 <- sprintf("The average trip duration is %0.1f minutes.", average_duration_annual_min)
+result_string_2 <- sprintf("The average trip distance is %0.1f kilometers.", average_distance_annual_km)
+
+print("Results for Annual Member")
+print(paste("Total trips:", total_trips_annual))
+print(result_string_1)
+print(result_string_2)
+```
+
+#-------------------------
+#   2.B - Casual member
+#-------------------------
+
+# Create a dataframe for casual riders
+```{r}
+casual_riders <- all_data[all_data$member_casual == "casual", ]
+
+#Calculate the total number of trips
+```{r}
+total_trips_casual <- nrow(casual_riders)
+```
+
+# Calculate the average trip duration
+```{r}
+trip_duration_casual_sec <- as.numeric(mean(casual_riders$ended_at - casual_riders$started_at))
+average_duration_casual_min <- trip_duration_casual_sec / 60
+```
+
+# Filter out the trips with missing latitude or longitude data
+```{r}
+valid_rows <- complete.cases(casual_riders[, c("start_lng", "start_lat", "end_lng", "end_lat")])
+valid_casual_riders <- casual_riders[valid_rows, ]
+```
+
+# Calculate the distances between the start and end points
+```{r}
+trip_distances_casual <- distHaversine(cbind(valid_casual_riders$start_lng, valid_casual_riders$start_lat), cbind(valid_casual_riders$end_lng, valid_casual_riders$end_lat))
+```
+
+# Calculate the average distance
+```{r}
+average_distance_casual_m <- mean(trip_distances_casual, na.rm = TRUE)
+average_distance_casual_km <- average_distance_casual_m / 1000
+```
+
+# Print the results
+```{r}
+result_string_3 <- sprintf("The average trip duration is %0.1f minutes.", average_duration_casual_min)
+result_string_4 <- sprintf("The average trip distance is %0.1f kilometers.", average_distance_casual_km)
+
+print("Results for Casual Member")
+print(paste("Total trips:", total_trips_casual))
+print(result_string_3)
+print(result_string_4)
+```
+
+#------------------------------------------------
+#------------------------------------------------
+#   3- Analyze both type of members together
+#------------------------------------------------
+#------------------------------------------------
+
+#--------------------------------------------
+#   3.A - Member behavior vs day of week
+#--------------------------------------------
+
+# Bar chart showing the difference in behavior between casual riders and annual members for each day of theweek:
+# Combine the data for casual riders and annual members into a single data frame
+```{r}
+day_of_week_rides <- rbind(
+  casual_riders %>% 
+    mutate(day_of_week = as.factor(weekdays(as.Date(started_at))), rider_type = "Casual Rider") %>% 
+    group_by(day_of_week, rider_type) %>% 
+    summarize(count = n()),
+  annual_members %>% 
+    mutate(day_of_week = as.factor(weekdays(as.Date(started_at))), rider_type = "Annual Member") %>% 
+    group_by(day_of_week, rider_type) %>% 
+    summarize(count = n())
+)
+```
+
+# Plot the bar chart
+```{r}
+day_of_week_rides$day_of_week <- factor(day_of_week_rides$day_of_week, 
+                                        levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+
+ggplot(data = day_of_week_rides, aes(x = factor(day_of_week, levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")), y = count, fill = rider_type)) +
+  geom_boxplot(outlier.size = 0) +
+  labs(x = "Day of Week", y = "Number of Rides", title = "Number of Rides by Day of Week and Rider Type") +
+  scale_y_continuous(labels = scales::comma) +
+  scale_fill_manual(values = c("red", "blue"), labels = c("Casual Riders", "Annual Members")) +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+#------------------------------------------------
+#   3.B - Member behavior vs month of the year
+#------------------------------------------------
+
+#Difference in behavior between casual riders and annual members for each month of the year:
+# Combine the data for casual riders and annual members into a single data frame
+```{r}
+month_rides <- rbind(
+  casual_riders %>% 
+    mutate(month = as.factor(format(as.Date(started_at), "%m")), rider_type = "Casual Rider") %>% 
+    group_by(month, rider_type) %>% 
+    summarize(count = n()),
+  annual_members %>% 
+    mutate(month = as.factor(format(as.Date(started_at), "%m")), rider_type = "Annual Member") %>% 
+    group_by(month, rider_type) %>% 
+    summarize(count = n()) )
+```
+
+# Plot the bar chart in month
+```{r}
+ggplot(data = month_rides, aes(x = month, y = count, fill = rider_type)) +
+  geom_col(position = "dodge") +
+  labs(x = "Month", y = "Number of Rides", title = "Number of Rides by Month and Rider Type") +
+  scale_fill_manual(values = c("red", "blue"), labels = c("Casual Riders", "Annual Members")) +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom") +
+  scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+  scale_y_continuous(labels = scales::comma)
+```
+
+#-------------------------------------------------------
+#   3.C - Member behavior vs time intervals of the day
+#-------------------------------------------------------
+
+# A bar chart to show the number of rides taken by both casual riders and annual members at different 3 hour time intervals:
+
+# Create a new column in your data frame with 3 hour time intervals
+```{r}
+all_data$time_interval <- cut(all_data$started_at, breaks = "3 hours")
+```
+
+# Count the number of rides for each time interval and type of member
+```{r}
+ride_counts <- 
+  all_data %>% 
+  group_by(time_interval, member_casual) %>% 
+  tally()
+```
+
+```{r}
+summary(time_interval)
+```
+
+# Plot the bar chart
+```{r}
+ggplot(all_data, aes(x = format(started_at, "%H"), fill = member_casual)) +
+  geom_bar(position = "dodge") +
+  scale_x_discrete(limits = c("00", "03", "06", "09", "12", "15", "18", "21")) +
+  xlab("Hour of the day (24h format)") +
+  ylab("Number of rides") +
+  ggtitle("Number of rides taken by casual riders and annual members at different 3 hour intervals") +
+  theme_minimal() + 
+  theme(legend.position = "top") + 
+  scale_y_continuous(labels = scales::comma) +
+  scale_fill_manual(values = c("red", "blue"), labels = c("Casual", "Annual"))
+```
+
+#-------------------------------------------------------------------
+#   3.D - Rides taken by each member (normalized) by rideable type
+#-------------------------------------------------------------------
+
+# Calculate the number of rides taken by each member type and rideable type
+```{r}
+ride_counts <- all_data %>% 
+  filter(rideable_type != "docked_bike") %>%
+  group_by(member_casual, rideable_type) %>% 
+  tally()
+```
+
+# Calculate the total number of rides taken by each member type
+```{r}
+total_rides <- all_data %>% 
+  filter(rideable_type != "docked_bike") %>%
+  group_by(member_casual) %>% 
+  summarize(total = n())
+```
+
+# Join the total rides and ride count data frames
+```{r}
+ride_counts <- inner_join(ride_counts, total_rides, by = "member_casual")
+```
+
+# Normalize the number of rides by dividing by the total trips on each member type
+```{r}
+ride_counts$normalized <- ride_counts$n / ride_counts$total
+```
+
+# Plot the bar chart
+```{r}
+ggplot(ride_counts, aes(x = rideable_type, fill = member_casual, y = normalized)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  xlab("Rideable Type") +
+  ylab("Normalized Number of Rides") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  ggtitle("Normalized number of rides taken by casual riders and annual members on different types of bikes") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  scale_fill_manual(values = c("red", "blue"),
+                    breaks = c("casual", "member"),
+                    labels = c("Casual Member", "Annual Member"))
+```
+
