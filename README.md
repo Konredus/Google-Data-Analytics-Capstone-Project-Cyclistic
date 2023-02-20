@@ -1,3 +1,4 @@
+https://res.cloudinary.com/dgad7iql8/image/upload/v1676930668/Logo_Cyclistic_x501or.png
 # Google-Data-Analytics-Capstone-Project-Cyclistic
 Cyclistic Bike-Share Analysis / Konrad Peschka / 6-Feb-2023
 
