@@ -1,7 +1,7 @@
 # Google-Data-Analytics-Capstone-Project-Cyclistic
-# Bike-Share Analysis
-# Konrad Peschka
-# 6-Feb-2023
+Bike-Share Analysis
+Konrad Peschka
+6-Feb-2023
 
 This analysis is an optional case study from the Google Data Analytics Professional Certificate on Coursera.
 
