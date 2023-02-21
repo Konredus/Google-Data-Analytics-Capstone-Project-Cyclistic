@@ -33,8 +33,10 @@ Data Source
 The data utilized for this analysis spans a one-year period from January 2022 to December 2022, and has been provided by Motivate International Inc. under license. 
 The data is stored in separate CSV files, which are organized by month and can be accessed here.
 
-# 6. Conclusion
+# 6. Conclusion & Presentation
 The data clearly shows a strong contrast in the usage patterns between Cyclistic subscribers and casual customers. While subscribers utilize the bikes as a primary mode of transportation, riding for shorter durations on a daily basis, customers use the service more for leisure, riding for longer durations on weekends. This insight can be used by Cyclistic to design targeted marketing campaigns and promotional offers to attract and retain these two different sets of customers. By understanding the unique needs and preferences of each group, Cyclistic can create tailored messaging that resonates with their respective target audiences and drives higher engagement and adoption of their service.
+
+Link to the presentation video: https://youtu.be/bL1MVze4Ihk
 
 # 7. Key Recommendations
 To increase the number of annual memberships at Cyclistic, we propose a targeted marketing campaign that will appeal to both casual riders and annual members. Our plan includes placing advertisements at the top 20 bike stations where customers book from and at high-traffic areas in the city, such as popular work and dining locations. We will also create a fun and relatable social media skit that engages audiences of all ages, while running a short survey to gather valuable data on our target customers.
